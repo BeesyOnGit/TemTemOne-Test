@@ -1,0 +1,27 @@
+{
+    "E00": "Error creating new user",
+    "E01": "Error can't find this user",
+    "E02": "Error occured while editing the user",
+    "E03": "Error occured while deleting the user",
+    "S00": "new user created successfully",
+    "S01": "user edited successfully",
+    "S02": "user deleted successfully",
+    "S03": "user found successfully",
+
+    "E10": "Error creating new product",
+    "E11": "Error can't find this product",
+    "E12": "Error occured while editing the product",
+    "E13": "Error occured while deleting the product",
+    "S10": "new product created successfully",
+    "S11": "product edited successfully",
+    "S12": "product deleted successfully",
+    "S13": "product found successfully",
+
+    "EU": "unknow error",
+    "EF": "Access forbiden",
+    "EC": "Error while encrypting password",
+    "EM": "Error required input missing",
+    "EP": "Error provided password not matching",
+    "ET": "No authorization token provided",
+    "WT": "Error Incorrect token"
+}
