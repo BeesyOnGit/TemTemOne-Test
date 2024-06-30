@@ -5,7 +5,14 @@ import ProductModel, { ProductType } from "../Models/ProductModel";
 export const createProduct = async (req: Request, res: Response) => {
     const { body, headers } = req;
     const { verifiedID } = headers;
+    const { image } = body as ProductType;
     try {
+        // if the image is not uploaded via the frontEnd to a CDN (send here as a base64 or Blob)
+        // implemet logic to do it here ...
+        // then replace the image value with the lin to the uploaded image provided by the CDN
+
+        // I would have donn it but it's outside the scope of the test (no required in the test)
+
         const newProduct = await ProductModel.create({ ...body, creator: verifiedID });
 
         if (!newProduct) {
