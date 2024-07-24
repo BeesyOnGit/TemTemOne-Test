@@ -1,0 +1,8 @@
+{"level":"error","message":"User validation failed: email: enter a valide email","service":"user-service","timestamp":"2024-07-24T18:50:53.393Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [24/Jul/2024:18:50:53 +0000] \"POST /user/register HTTP/1.1\" 400 75 \"-\" \"PostmanRuntime/7.37.3\"","service":"user-service","timestamp":"2024-07-24T18:50:53.401Z"}
+{"level":"error","message":"User validation failed: email: enter a valide email","service":"user-service","timestamp":"2024-07-24T18:51:15.594Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [24/Jul/2024:18:51:15 +0000] \"POST /user/register HTTP/1.1\" 400 75 \"-\" \"PostmanRuntime/7.37.3\"","service":"user-service","timestamp":"2024-07-24T18:51:15.596Z"}
+{"level":"error","message":"User validation failed: email: enter a valide email","service":"user-service","timestamp":"2024-07-24T18:51:16.570Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [24/Jul/2024:18:51:16 +0000] \"POST /user/register HTTP/1.1\" 400 75 \"-\" \"PostmanRuntime/7.37.3\"","service":"user-service","timestamp":"2024-07-24T18:51:16.574Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [24/Jul/2024:18:52:06 +0000] \"POST /user/register HTTP/1.1\" 200 14 \"-\" \"PostmanRuntime/7.37.3\"","service":"user-service","timestamp":"2024-07-24T18:52:06.843Z"}
+{"level":"info","message":"::ffff:127.0.0.1 - - [24/Jul/2024:18:53:55 +0000] \"POST /user/login HTTP/1.1\" 200 182 \"-\" \"PostmanRuntime/7.37.3\"","service":"user-service","timestamp":"2024-07-24T18:53:55.588Z"}

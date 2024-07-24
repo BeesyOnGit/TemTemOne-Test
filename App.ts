@@ -5,14 +5,18 @@ import dotenv from "dotenv";
 import compression from "compression";
 import cors from "cors";
 import { DbConnection } from "./DBConnection";
-//imports for your modules (auto generated)
+import mongoose from "mongoose";
+import morgan from "morgan";
+import helmet from "helmet";
+import rateLimit from "express-rate-limit";
+
 import UserRoutes from "./Routes/UserRoutes";
 import ProductRoutes from "./Routes/ProductRoutes";
-import mongoose from "mongoose";
+import { logger } from "./Middleware/Utils";
 
 dotenv.config();
 
-//Constatnts definition
+//Constants definition
 const app: any = express();
 const PORT = process.env.PORT;
 http.createServer(app);
@@ -34,9 +38,34 @@ app.use(
     })
 );
 
+//App upload limite setting
+app.use(bodyParser.json({ limit: "10mb" }));
+app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
+
+//Define the authorized origins to communicate with
+app.use(cors({ origin: "*" })); // for dev purposes only change origin later if needed
+app.use(helmet());
+app.use(morgan("combined", { stream: { write: (message: string) => logger.info(message.trim()) } })); // HTTP request logger
+
+// Configure the rate limiter (normally i do this part using NGINX but fot the test purpose i do it here)
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // limit each IP to 100 requests per windowMs
+    message: "Too many requests from this IP, please try again after 15 minutes",
+    headers: true, // Include rate limit info in the `RateLimit-*` headers
+});
+
+// Apply the rate limiter to all requests
+app.use(limiter);
+
+//************************************ # API ROUTES (DO NOT DELETE) # ****************************************//
+//routing for your modules (auto generated)
+app.use("/user", UserRoutes);
+app.use("/product", ProductRoutes);
+
 // Define a middleware to handle 404 errors
 app.use((req: Request, res: Response, next: NextFunction) => {
-    const error = new Error("Not found");
+    const error = new Error("Requested Page Not Found");
     res.status(404).json({
         message: error.message,
     });
@@ -56,19 +85,6 @@ app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
         });
     }
 });
-
-//App upload limite setting
-app.use(bodyParser.json({ limit: "20mb" }));
-app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
-
-//Define the authorized origins to communicate with
-app.use(bodyParser.json());
-app.use(cors({ origin: "*" }));
-
-//************************************ # API ROUTES (DO NOT DELETE) # ****************************************//
-//routing for your modules (auto generated)
-app.use("/user", UserRoutes);
-app.use("/product", ProductRoutes);
 //************************************ # SERVER PORT SET # ****************************************//
 
 app.listen(PORT, () => {

@@ -1,9 +1,12 @@
 import { Response, Request } from "express";
 import { decryptString, editModelWithSave, encryptString, generateToken } from "../Middleware/ServerFunctions";
 import UserModel, { UserType } from "../Models/UserModel";
+import { logger } from "../Middleware/Utils";
 
 export const registerUser = async (req: Request, res: Response) => {
     const { body } = req;
+    // Please note here that we do not validate the inputs (apart from escaping special characters)
+    // Because mongoose does it for us (see the model file for more details)
     try {
         const { password } = (body as UserType) || {};
 
@@ -27,12 +30,14 @@ export const registerUser = async (req: Request, res: Response) => {
         return res.status(200).json({ code: "S00" });
     } catch (error: any) {
         console.log("🚀 ~ file: UserControllers.ts:21 ~ createUser ~ error:", error);
+        logger.error(error.message);
         return res.status(400).json({ code: "EU", error: error.message });
     }
 };
 export const loginUser = async (req: Request, res: Response) => {
     const { body } = req;
     const { email, password } = body as Partial<UserType>;
+    // Same as above here (about the validation)
     try {
         const findUser = await UserModel.findOne({ email });
 
@@ -56,6 +61,7 @@ export const loginUser = async (req: Request, res: Response) => {
         return res.status(200).json({ code: "S03", data: { token } });
     } catch (error: any) {
         console.log("🚀 ~ file: UserControllers.ts:21 ~ createUser ~ error:", error);
+        logger.error(error.message);
         return res.status(400).json({ code: "EU", error: error.message });
     }
 };
@@ -82,11 +88,12 @@ export const editUser = async (req: Request, res: Response) => {
         return res.status(200).json({ code: "S01" });
     } catch (error: any) {
         console.log("🚀 ~ file: UserControllers.ts:45 ~ editUser ~ error:", error);
+        logger.error(error.message);
         return res.status(400).json({ code: "EU", error: error.message });
     }
 };
 export const deleteUser = async (req: Request, res: Response) => {
-    const { params, headers } = req;
+    const { params } = req;
     const { id } = params;
     const filter = { _id: id };
 
@@ -106,6 +113,7 @@ export const deleteUser = async (req: Request, res: Response) => {
         return res.status(200).json({ code: "S02" });
     } catch (error: any) {
         console.log("🚀 ~ file: UserControllers.ts:67 ~ deleteUser ~ error:", error);
+        logger.error(error.message);
         return res.status(400).json({ code: "EU", error: error.message });
     }
 };
@@ -121,6 +129,7 @@ export const getUsers = async (req: Request, res: Response) => {
         return res.status(200).json({ code: "S03", data: { users: Users } });
     } catch (error: any) {
         console.log("🚀 ~ file: UserControllers.ts:88 ~ getUsers ~ error:", error);
+        logger.error(error.message);
         return res.status(400).json({ code: "EU", error: error.message });
     }
 };

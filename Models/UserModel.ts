@@ -6,8 +6,9 @@ const UserSchema = new mongoose.Schema<UserType>({
             validator: (name: string) => {
                 return name.length > 5;
             },
+            message: "name must be more than 5 characters",
         },
-        message: "name must be more than 5 characters",
+        trim: true,
     },
     lastName: {
         type: String,
@@ -15,8 +16,9 @@ const UserSchema = new mongoose.Schema<UserType>({
             validator: (name: string) => {
                 return name.length > 5;
             },
+            message: "name must be more than 5 characters",
         },
-        message: "name must be more than 5 characters",
+        trim: true,
     },
     email: {
         type: String,
@@ -28,6 +30,7 @@ const UserSchema = new mongoose.Schema<UserType>({
             },
             message: "enter a valide email",
         },
+        trim: true,
     },
     password: {
         type: String,

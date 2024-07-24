@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import { NextFunction, Request, Response } from "express";
 import UserModel from "../Models/UserModel";
 import CryptoJS from "crypto-js";
+import { escapeInput, logger } from "./Utils";
 
 dotenv.config();
 
@@ -44,7 +45,27 @@ export const AuthVerificationMiddleware = async (req: Request, res: Response, ne
         next();
     } catch (error: any) {
         console.log("🚀 ~ file: ServerFunctions.ts:20 ~ AuthVerification ~ error:", error);
+        logger.error(error.message);
         return res.json({ code: "EU", error: error.message });
+    }
+};
+export const sanitizeInputs = (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { body } = req;
+
+        if (!body) {
+            return next();
+        }
+
+        for (const key in body) {
+            body[key] = escapeInput(body[key]);
+        }
+
+        req.body = body;
+        next();
+    } catch (error: any) {
+        console.log("🚀 ~ file: ServerFunctions.ts:54 ~ sanitizeInputs ~ error:", error);
+        logger.error(error.message);
     }
 };
 
@@ -59,6 +80,7 @@ export const adminCheck = (req: Request, res: Response, next: NextFunction) => {
         next();
     } catch (error: any) {
         console.log("🚀 ~ file: ServerFunctions.ts:20 ~ AuthVerification ~ error:", error);
+        logger.error(error.message);
         return res.json({ code: "EU", error: error.message });
     }
 };
@@ -69,7 +91,8 @@ export const TokenVerifier = (token: string) => {
             return false;
         }
         return jwt.verify(token, process.env.TOKEN_ENCRIPTION_KEY!);
-    } catch (error) {
+    } catch (error: any) {
+        logger.error(error.message);
         console.log("🚀 ~ file: middle.ts:25 ~ TokenVerifier ~ error:", error);
     }
 };
@@ -80,7 +103,8 @@ export const generateToken = (id: string) => {
             return "id is Mendatory";
         }
         return jwt.sign({ id }, process.env.TOKEN_ENCRIPTION_KEY!);
-    } catch (error) {
+    } catch (error: any) {
+        logger.error(error.message);
         console.log("🚀 ~ file: middle.ts:36 ~ generateToken ~ error:", error);
     }
 };
@@ -104,7 +128,8 @@ export const editModelWithSave = (model: any, edit: any) => {
 export const encryptString = (infos: string) => {
     try {
         return CryptoJS.AES.encrypt(infos, process.env.PASSWORD_ENCRIPTION_KEY!);
-    } catch (error) {
+    } catch (error: any) {
+        logger.error(error.message);
         console.log("🚀 ~ file: ServerFunctions.ts:127 ~ cryptBillingInfos ~ error:", error);
         return false;
     }
@@ -113,7 +138,8 @@ export const encryptString = (infos: string) => {
 export const decryptString = (encryptedBilling: string) => {
     try {
         return CryptoJS.AES.decrypt(encryptedBilling, process.env.PASSWORD_ENCRIPTION_KEY!).toString(CryptoJS.enc.Utf8);
-    } catch (error) {
+    } catch (error: any) {
+        logger.error(error.message);
         console.log("🚀 ~ file: ServerFunctions.ts:134 ~ decryptBillingInfos ~ error:", error);
         return false;
     }

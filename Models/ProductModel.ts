@@ -3,23 +3,34 @@ const ProductSchema = new mongoose.Schema<ProductType>({
     name: {
         type: String,
         required: true,
+        trim: true,
     },
     description: {
         type: String,
         required: true,
+        trim: true,
     },
-    creator: {
+    creater: {
         type: String,
         required: true,
         ref: "User",
+        trim: true,
+        // this is a reference to the product creater
     },
     category: {
         type: String,
         required: true,
+        trim: true,
     },
     image: {
         type: String,
         required: true,
+        trim: true,
+    },
+    deleted: {
+        type: Boolean,
+        required: true,
+        default: false,
     },
     price: {
         type: Number,
@@ -29,12 +40,14 @@ const ProductSchema = new mongoose.Schema<ProductType>({
                 return price > 0;
             },
         },
+        trim: true,
     },
     createdAt: {
         type: Number,
         default: () => {
             return Date.now();
         },
+        trim: true,
     },
     editedAt: {
         type: Number,
@@ -57,7 +70,8 @@ export type ProductType = {
     image: string;
     category: string;
     price: number;
-    creator: string;
+    creater: string;
+    deleted: boolean;
     createdAt?: number;
     editedAt?: number;
     _id?: string | mongoose.Schema.Types.ObjectId;
