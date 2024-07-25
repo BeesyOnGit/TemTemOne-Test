@@ -40,11 +40,11 @@ app.use(
 
 //App upload limite setting
 app.use(bodyParser.json({ limit: "10mb" }));
-app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
+app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
 
 //Define the authorized origins to communicate with
-app.use(cors({ origin: "*" })); // for dev purposes only change origin later if needed
-app.use(helmet());
+app.use(cors({ origin: "*" })); // The * is for dev purposes only change origin later if needed
+app.use(helmet()); //Adds various security HTTP Headers
 app.use(morgan("combined", { stream: { write: (message: string) => logger.info(message.trim()) } })); // HTTP request logger
 
 // Configure the rate limiter (normally i do this part using NGINX but fot the test purpose i do it here)
@@ -59,7 +59,8 @@ const limiter = rateLimit({
 app.use(limiter);
 
 //************************************ # API ROUTES (DO NOT DELETE) # ****************************************//
-//routing for your modules (auto generated)
+
+//Routing for your modules
 app.use("/user", UserRoutes);
 app.use("/product", ProductRoutes);
 
